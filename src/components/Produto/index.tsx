@@ -3,10 +3,11 @@ import { addFavorite } from '../../redux/favorites/slice'
 import { addCart } from '../../redux/cart/slice'
 import { Produto as ProdutoType } from '../../App'
 import * as S from './styles'
+import { useSelector } from 'react-redux'
+import { RootReducer } from '../../redux/store'
 
 type Props = {
   produto: ProdutoType
-  estaNosFavoritos: boolean
 }
 
 export const paraReal = (valor: number) =>
@@ -14,8 +15,12 @@ export const paraReal = (valor: number) =>
     valor
   )
 
-const ProdutoComponent = ({ produto, estaNosFavoritos }: Props) => {
+const ProdutoComponent = ({ produto }: Props) => {
   const dispatch = useDispatch()
+
+  const { listItemsFavorite } = useSelector(
+    (state: RootReducer) => state.favoriteSlice
+  )
 
   return (
     <S.Produto>
@@ -30,7 +35,7 @@ const ProdutoComponent = ({ produto, estaNosFavoritos }: Props) => {
         onClick={() => dispatch(addFavorite(produto))}
         type="button"
       >
-        {estaNosFavoritos
+        {listItemsFavorite.includes(produto)
           ? '- Remover dos favoritos'
           : '+ Adicionar aos favoritos'}
       </S.BtnComprar>

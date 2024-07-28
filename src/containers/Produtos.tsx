@@ -1,13 +1,15 @@
-import { Produto as ProdutoType } from '../App'
 import Produto from '../components/Produto'
+import { useGetProductQuery } from '../redux/services/api'
 
 import * as S from './styles'
 
-type Props = {
-  produtos: ProdutoType[]
-}
+const ProdutosComponent = () => {
+  const { data: produtos, isLoading } = useGetProductQuery()
 
-const ProdutosComponent = ({ produtos }: Props) => {
+  if (isLoading) {
+    return <h2>Carregando...</h2>
+  }
+
   return (
     <>
       <S.Produtos>
